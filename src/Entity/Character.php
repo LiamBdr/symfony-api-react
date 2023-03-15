@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CharacterRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CharacterRepository::class)]
 #[ORM\Table(name: '`character`')]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['character:read']],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 class Character
 {
     #[ORM\Id]
@@ -17,27 +22,34 @@ class Character
     #[ORM\Column]
     private ?int $id = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $status = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $species = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $gender = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
+    #[groups(['character:read'])]
     #[ORM\ManyToOne]
     private ?Location $location = null;
 
+    #[groups(['character:read'])]
     #[ORM\ManyToOne]
     private ?Origin $origin = null;
 

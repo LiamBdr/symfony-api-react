@@ -2,12 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\OriginRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OriginRepository::class)]
-#[ApiResource]
 class Origin
 {
     #[ORM\Id]
@@ -15,6 +14,7 @@ class Origin
     #[ORM\Column]
     private ?int $id = null;
 
+    #[groups(['character:read'])]
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
